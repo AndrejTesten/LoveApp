@@ -32,6 +32,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Enter 'Bearer' [space] and then your token"
     });
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -45,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // ------------------------
-// Database
+// Database (Supabase Postgres)
 // ------------------------
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -59,7 +60,7 @@ var audience = builder.Configuration["Jwt:Audience"];
 
 if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
 {
-    throw new Exception("JWT Key, Issuer or Audience is missing in appsettings.json!");
+    throw new Exception("JWT Key, Issuer, or Audience is missing in appsettings.json!");
 }
 
 builder.Services.AddAuthentication(options =>
@@ -82,7 +83,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 // ------------------------
-// CORS
+// CORS for Angular frontend
 // ------------------------
 builder.Services.AddCors(options =>
 {
@@ -96,7 +97,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 // ------------------------
 // Cloudinary Settings
 // ------------------------
@@ -105,8 +105,7 @@ builder.Services.Configure<CloudinarySettings>(
 );
 
 var app = builder.Build();
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-app.Urls.Add($"http://*:{port}");
+
 // ------------------------
 // Middleware pipeline
 // ------------------------
@@ -116,13 +115,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowAngularDev"); // allow Angular dev in dev environment
 }
-else
-{
-    // Production: enable HTTPS, configure CORS as needed
-    app.UseHttpsRedirection();
-}
+
+// Always enable CORS
+app.UseCors("AllowAngularFrontend");
+
+// Use HTTPS redirection in production (optional)
+app.UseHttpsRedirection();
 
 // Authentication & Authorization
 app.UseAuthentication();
@@ -130,5 +129,9 @@ app.UseAuthorization();
 
 // Map controllers
 app.MapControllers();
+
+// Run on PORT environment variable (Render sets this automatically)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Urls.Add($"http://*:{port}");
 
 app.Run();
