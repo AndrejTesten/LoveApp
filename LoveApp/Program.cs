@@ -117,11 +117,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Use HTTPS redirection in production (optional)
+app.UseHttpsRedirection();
+
 // Always enable CORS
 app.UseCors("AllowAngularFrontend");
 
-// Use HTTPS redirection in production (optional)
-app.UseHttpsRedirection();
+
 
 // Authentication & Authorization
 app.UseAuthentication();
