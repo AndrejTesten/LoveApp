@@ -102,7 +102,8 @@ builder.Services.Configure<CloudinarySettings>(
 );
 
 var app = builder.Build();
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Urls.Add($"http://*:{port}");
 // ------------------------
 // Middleware pipeline
 // ------------------------
