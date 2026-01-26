@@ -86,13 +86,16 @@ builder.Services.AddAuthentication(options =>
 // ------------------------
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularDev", policy =>
+    options.AddPolicy("AllowAngularFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "https://lapp-5vko.onrender.com" // <-- your deployed Angular URL
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
+
 
 // ------------------------
 // Cloudinary Settings
