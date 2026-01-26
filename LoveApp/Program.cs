@@ -89,13 +89,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularFrontend", policy =>
     {
-        policy.WithOrigins(
-            "https://lapp-5vko.onrender.com" // <-- your deployed Angular URL
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
+
 
 // ------------------------
 // Cloudinary Settings
@@ -130,8 +130,5 @@ app.UseAuthorization();
 // Map controllers
 app.MapControllers();
 
-// Run on PORT environment variable (Render sets this automatically)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-app.Urls.Add($"http://*:{port}");
 
 app.Run();
