@@ -50,9 +50,13 @@ namespace LoveApp.Controllers
             int userId = int.Parse(userIdClaim.Value);
 
             // Check if user already got a message today
-            var today = DateTime.UtcNow.Date;
+            var todayStart = DateTime.UtcNow.Date;
+            var todayEnd = todayStart.AddDays(1);
+
             var alreadyToday = await _db.SentMysteryMessages
-                .Where(sm => sm.UserId == userId && sm.SentAt.Date == today)
+                .Where(sm => sm.UserId == userId
+                          && sm.SentAt >= todayStart
+                          && sm.SentAt < todayEnd)
                 .AnyAsync();
 
             if (alreadyToday)

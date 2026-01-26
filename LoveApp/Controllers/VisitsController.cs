@@ -29,7 +29,7 @@ namespace LoveApp.Controllers
         [HttpGet("next")]
         public async Task<ActionResult<Visit>> GetNextVisit()
         {
-            var today = DateTime.Today;
+            var today = DateTime.Today.ToUniversalTime();
             var next = await _db.Visits
                 .Where(v => v.StartDate >= today)
                 .OrderBy(v => v.StartDate)
@@ -47,8 +47,8 @@ namespace LoveApp.Controllers
         {
             if (visit.EndDate < visit.StartDate)
                 return BadRequest("End date cannot be before start date.");
-
-            if (visit.StartDate < DateTime.Today)
+            
+            if (visit.StartDate < DateTime.Today.ToUniversalTime())
                 return BadRequest("Start date cannot be in the past.");
 
             _db.Visits.Add(visit);

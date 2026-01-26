@@ -38,18 +38,21 @@ namespace LoveApp.Controllers
         [HttpGet("nextvisit")]
         public IActionResult GetNextVisit()
         {
+            var todayUtc = DateTime.Today.ToUniversalTime(); // converts local midnight to UTC
+
             // Find the next visit today or in the future
             var nextVisit = _dbContext.Visits
-                .Where(v => v.StartDate >= DateTime.Today)
-                .OrderBy(v => v.StartDate)
-                .Select(v => new
-                {
-                    v.StartDate,
-                    v.EndDate,
-                    v.City,
-                    v.Note
-                })
-                .FirstOrDefault();
+     .Where(v => v.StartDate >= todayUtc)
+     .OrderBy(v => v.StartDate)
+     .Select(v => new
+     {
+         v.StartDate,
+         v.EndDate,
+         v.City,
+         v.Note
+     })
+     .FirstOrDefault();
+
 
             if (nextVisit == null)
                 return NotFound("No upcoming visits");
