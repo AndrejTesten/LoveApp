@@ -38,7 +38,7 @@ namespace LoveApp.Controllers
             if (string.IsNullOrEmpty(drawing.DrawingData))
                 return BadRequest("Drawing data cannot be empty");
 
-            drawing.UpdatedAt = DateTime.Now;
+            drawing.UpdatedAt = DateTime.UtcNow;
 
             _db.Drawings.Add(drawing);
             await _db.SaveChangesAsync();
