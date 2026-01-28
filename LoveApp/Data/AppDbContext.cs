@@ -91,6 +91,12 @@ public class AppDbContext : DbContext
                 v => v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
             );
+        modelBuilder.Entity<Drawing>()
+    .Property(n => n.CreatedAt)
+    .HasConversion(
+        v => v.ToUniversalTime(),
+        v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+    );
     }
 
 }
