@@ -9,12 +9,10 @@ namespace LoveApp.Models
         public int Id { get; set; }
 
         [Required]
-        public int QuestionId { get; set; }
-        [ForeignKey("QuestionId")]
-        public Question Question { get; set; }
+        public int QuestionId { get; set; } // just store the Question ID
 
         [Required]
-        public string UserId { get; set; } = string.Empty; // could be your auth user id
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
         public string Text { get; set; } = string.Empty;

@@ -22,6 +22,22 @@ namespace LoveApp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("LoveApp.Models.ActiveQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActiveQuestions");
+                });
+
             modelBuilder.Entity("LoveApp.Models.Answer", b =>
                 {
                     b.Property<int>("Id")
@@ -45,8 +61,6 @@ namespace LoveApp.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -260,9 +274,6 @@ namespace LoveApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DayNumber")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
@@ -401,17 +412,6 @@ namespace LoveApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Visits");
-                });
-
-            modelBuilder.Entity("LoveApp.Models.Answer", b =>
-                {
-                    b.HasOne("LoveApp.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("LoveApp.Models.MemoryImage", b =>

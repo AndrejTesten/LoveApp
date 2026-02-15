@@ -27,6 +27,8 @@ namespace LoveApp.Data
         public DbSet<Question> Questions { get; set; } = null!;
         public DbSet<Answer> Answers { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<ActiveQuestion> ActiveQuestions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,7 +68,7 @@ namespace LoveApp.Data
             ConvertToUtc<Drawing>("CreatedAt");
             ConvertToUtc<Drawing>("UpdatedAt");
 
-            ConvertToUtc<Answer>("AnsweredAt"); // new: store answers in UTC
+        ConvertToUtc<Answer>("AnsweredAt"); 
         }
     }
 }

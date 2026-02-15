@@ -16,8 +16,8 @@ public class NotificationsController : ControllerBase
     }
 
     // Get unseen notifications for logged-in user
-    [HttpGet]
-    public async Task<IActionResult> GetNotifications()
+    [HttpGet("unseen")]
+    public async Task<IActionResult> GetUnseenNotifications()
     {
         var userId = User.Identity!.Name!;
         var notifications = await _db.Notifications
@@ -26,6 +26,7 @@ public class NotificationsController : ControllerBase
 
         return Ok(notifications);
     }
+
 
     // Mark notification as shown
     [HttpPost("mark-shown/{id}")]
